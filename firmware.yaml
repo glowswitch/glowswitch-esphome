@@ -19,6 +19,7 @@ esp32:
 logger:
 
 api:
+
 ota:
   - platform: esphome
 
@@ -31,7 +32,11 @@ captive_portal:
 
 esp32_improv:
   authorizer: none
-    
+
+dashboard_import:
+  package_import_url: github://glowswitch/glowswitch-esphome/firmware.yaml@main
+  import_full_config: true
+
 # --- servo PWM output ---
 output:
   - platform: ledc

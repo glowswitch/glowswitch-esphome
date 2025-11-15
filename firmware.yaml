@@ -1,0 +1,103 @@
+substitutions:
+  name: "glowswitch"
+  friendly_name: "glowswitch"
+
+esphome:
+  name: "${name}"
+  friendly_name: "${friendly_name}"
+  name_add_mac_suffix: true
+
+  project:
+    name: "glowswitch.glow-s-e-1"
+    version: "2025.11.0"
+
+esp32:
+  board: nologo_esp32c3_super_mini
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+ota:
+  - platform: esphome
+
+wifi:
+  output_power: 8.5dB
+  ap:
+    ssid: "glowswitch-setup"
+
+captive_portal:
+
+esp32_improv:
+  authorizer: none
+    
+# --- servo PWM output ---
+output:
+  - platform: ledc
+    pin: 4   
+    id: servo_output
+    frequency: 50 Hz
+
+# --- servo component ---
+servo:
+  - id: glowservo
+    output: servo_output
+    min_level: 3%     # Typical safe defaults
+    max_level: 12%
+
+# --- slider allowing servo distance to be controller ---
+number:
+  - platform: template
+    id: servo_position
+    name: "Servo Distance"
+    min_value: -1.0
+    max_value: 1.0
+    step: 0.1
+    optimistic: true
+    restore_value: true
+
+
+# --- on/off switch controlling servo position ---
+switch:
+  - platform: template
+    id: glowswitch_switch
+    name: "Switch"
+    optimistic: true
+
+    turn_on_action:
+      # move to user-selected distance
+      - lambda: |- 
+          float p = id(servo_position).state;
+          id(glowservo).write(p);   // move to user-selected travel
+      - delay: 0.5s # wait
+      - servo.write: # go back to home position
+          id: glowservo
+          level: 0 
+      - delay: 0.5s # wait
+      - servo.detach: glowservo # detach servo to prevent jittering
+
+    turn_off_action:
+      # move to user-selected distance
+      - lambda: |- 
+          float p = -1.0 * id(servo_position).state;
+          id(glowservo).write(p);   // move to user-selected travel
+      - delay: 0.5s # wait
+      - servo.write: # go back to home position
+          id: glowservo
+          level: 0 
+      - delay: 0.5s # wait
+      - servo.detach: glowservo # detach servo to prevent jittering
+
+binary_sensor:    
+  - platform: gpio
+    pin: 
+      number: GPIO9
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Button"
+    internal: true
+    on_press: 
+      - switch.toggle: glowswitch_switch

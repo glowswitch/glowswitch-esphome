@@ -1,0 +1,13 @@
+{
+  "name": "glowswitch",
+  "version": "2025.2.1",
+  "builds": [
+    {
+      "chipFamily": "ESP32-C3",
+      "ota": {
+        "path": "https://glowswitch.github.io/glowswitch-esphome/firmware/glowswitch.ota.bin",
+        "md5": "0aecc2115ae257a46a9e90a27b8064cd"
+      }
+    }
+  ]
+}

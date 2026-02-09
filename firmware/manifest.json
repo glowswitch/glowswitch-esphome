@@ -6,7 +6,7 @@
       "chipFamily": "ESP32-C3",
       "ota": {
         "path": "https://glowswitch.github.io/glowswitch-esphome/firmware/glowswitch.ota.bin",
-        "md5": "0aecc2115ae257a46a9e90a27b8064cd"
+        "md5": "3514501643dde2afbce9c0def97beaa5"
       }
     }
   ]

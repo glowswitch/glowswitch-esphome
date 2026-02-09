@@ -48,10 +48,10 @@ output:
 servo:
   - id: glowservo
     output: servo_output
-    min_level: 3%     # Typical safe defaults
+    min_level: 3%    
     max_level: 12%
 
-# --- slider allowing servo distance to be controller ---
+# --- slider allowing servo distance to be controlled ---
 number:
   - platform: template
     id: servo_position
@@ -94,7 +94,7 @@ switch:
       - delay: 0.5s # wait
       - servo.detach: glowservo # detach servo to prevent jittering
 
-binary_sensor:    
+binary_sensor: # the button to toggle the switch
   - platform: gpio
     pin: 
       number: GPIO9

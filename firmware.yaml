@@ -9,7 +9,7 @@ esphome:
 
   project:
     name: "glowswitch.glow-s-e-1"
-    version: "2025.11.0"
+    version: "2026.2.1"
 
 esp32:
   board: nologo_esp32c3_super_mini
@@ -20,8 +20,12 @@ logger:
 
 api:
 
+http_request:
+  timeout: 30s
+
 ota:
   - platform: esphome
+  - platform: http_request
 
 wifi:
   output_power: 8.5dB
@@ -36,6 +40,13 @@ esp32_improv:
 dashboard_import:
   package_import_url: github://glowswitch/glowswitch-esphome/firmware.yaml@main
   import_full_config: true
+
+update:
+  - platform: http_request
+    name: "glowswitch Firmware Update"
+    id: glowswitch_update
+    source: "https://glowswitch.github.io/glowswitch-esphome/firmware/manifest.json"
+    update_interval: 6h
 
 # --- servo PWM output ---
 output:

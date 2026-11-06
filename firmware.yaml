@@ -107,6 +107,7 @@ switch:
 
 binary_sensor: # the button to toggle the switch
   - platform: gpio
+    id: glowswitch_button
     pin: 
       number: GPIO9
       inverted: true
